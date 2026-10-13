@@ -1,3 +1,6 @@
+import os
+import asyncio
+
 from telegram import (
     Update,
     InlineKeyboardButton,
@@ -22,9 +25,9 @@ from openai import OpenAI
 # КЛЮЧИ
 # =========================
 
-TELEGRAM_TOKEN = "8848207688:AAFGlEX0X7FVLYYMQteEcnSEpHowXN8ou18"
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "").strip()
 
-OPENROUTER_API_KEY = "8848207688:AAFGlEX0X7FVLYYMQteEcnSEpHowXN8ou18"
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 
 
 # =========================
@@ -247,7 +250,8 @@ async def chat(
         # AI
         # =========================
 
-        response = client.chat.completions.create(
+        response = await asyncio.to_thread(
+            client.chat.completions.create,
 
             model="mistralai/mistral-7b-instruct:free",
 
@@ -264,7 +268,7 @@ async def chat(
                     "content": user_message
                 }
             ]
-        )
+            )
 
         answer = response.choices[0].message.content
 
@@ -272,8 +276,9 @@ async def chat(
 
     except Exception as e:
 
+        print(f"Ошибка обработки сообщения: {type(e).__name__}: {e}")
         await update.message.reply_text(
-            f"❌ Ошибка:\n{e}"
+            "❌ Не удалось обработать сообщение. Проверь настройки API и попробуй ещё раз."
         )
 
 
@@ -281,9 +286,12 @@ async def chat(
 # ЗАПУСК
 # =========================
 
-app = ApplicationBuilder().token(
-    TELEGRAM_TOKEN
-).build()
+if not TELEGRAM_TOKEN or not OPENROUTER_API_KEY:
+    raise RuntimeError(
+        "Укажи TELEGRAM_TOKEN и OPENROUTER_API_KEY в переменных окружения."
+    )
+
+app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
 
 app.add_handler(
