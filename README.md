@@ -1,8 +1,37 @@
-# yura-ai-bot
+# Юра AI — Telegram-бот
 
-## Project links
+Экспериментальный Telegram-бот с ответами через OpenRouter. В личном чате можно писать обычные сообщения; в группе команды бота начинаются с «Юра».
 
-This repository is an experimental AI project. Its scope and maturity may differ from the main OuRi products.
+## Возможности
+- /start — показать стартовое меню.
+- Ответы ИИ на текстовые сообщения.
+- Приветствие новых участников групп.
+- Мини-игра в группе: «Юра играть» и «Юра стоп».
+- Запрос к ИИ выполняется отдельно от event loop, чтобы не блокировать обработку Telegram.
 
-- [OuRi Corp — project directory](https://spaj7468-cell.github.io/ouri-corp/)
-- [All GitHub repositories](https://github.com/spaj7468-cell?tab=repositories)
+## Запуск
+Нужен Python 3.10+.
+1. Установи зависимости: python -m pip install -r requirements.txt
+2. Создай токен Telegram-бота через BotFather и получи API-ключ OpenRouter.
+3. Задай TELEGRAM_TOKEN и OPENROUTER_API_KEY как переменные окружения, затем запусти python bot.py.
+
+PowerShell:
+$env:TELEGRAM_TOKEN="токен_telegram"
+$env:OPENROUTER_API_KEY="ключ_openrouter"
+python bot.py
+
+Linux/macOS:
+export TELEGRAM_TOKEN="токен_telegram"
+export OPENROUTER_API_KEY="ключ_openrouter"
+python bot.py
+
+Если ключи не заданы, приложение остановится с понятным сообщением. Не записывай токены в исходники и не публикуй их. Если секрет уже попал в Git, отзови его у провайдера и создай новый: новый коммит не удаляет старую историю.
+
+## Примечания
+- Модель задаётся в bot.py; доступность зависит от OpenRouter.
+- Это экспериментальный проект, а не гарантированно доступный 24/7 сервис.
+- Пользователь получает нейтральное сообщение об ошибке, а подробности остаются в логе процесса.
+
+## Ссылки
+- [OuRi Corp](https://spaj7468-cell.github.io/ouri-corp/)
+- [Исходный код](https://github.com/spaj7468-cell/yura-ai-bot)
