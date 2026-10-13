@@ -29,6 +29,11 @@ TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "").strip()
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 
+if not TELEGRAM_TOKEN or not OPENROUTER_API_KEY:
+    raise RuntimeError(
+        "Укажи TELEGRAM_TOKEN и OPENROUTER_API_KEY в переменных окружения."
+    )
+
 
 # =========================
 # OPENROUTER
@@ -285,11 +290,6 @@ async def chat(
 # =========================
 # ЗАПУСК
 # =========================
-
-if not TELEGRAM_TOKEN or not OPENROUTER_API_KEY:
-    raise RuntimeError(
-        "Укажи TELEGRAM_TOKEN и OPENROUTER_API_KEY в переменных окружения."
-    )
 
 app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
